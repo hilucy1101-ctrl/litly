@@ -18,15 +18,47 @@ const App: React.FC = () => {
 
   const audiences: AudienceType[] = ['인플루언서', '스타트업', '부업', '유튜버', '작가'];
 
+  /** 
+   * 리틀리 캐릭터형 공식 로고 URL
+   */
+  const LOGO_URL = "https://littly.io/static/media/logo_black.7f48b1d9.svg";
+  
+  /**
+   * 셀러 신청 페이지 URL
+   */
+  const REGISTER_URL = "https://app.litt.ly/register";
+
+  /**
+   * 히어로 섹션 배경 이미지 URL (사용자가 제공한 이미지와 가장 유사한 고화질 소스)
+   */
+  const HERO_IMAGE_URL = "https://images.unsplash.com/photo-1499750310107-5fef28a66643?auto=format&fit=crop&q=80&w=1200";
+
   return (
     <div className="min-h-screen bg-white">
       {/* Navigation */}
       <nav className="sticky top-0 z-50 bg-white/80 backdrop-blur-md border-b border-slate-100 px-5 py-4 flex items-center justify-between">
-        <div className="text-2xl font-black tracking-tighter text-slate-900">littly</div>
+        <div className="flex items-center h-9">
+          <img 
+            src={LOGO_URL} 
+            alt="littly logo" 
+            className="h-full w-auto object-contain" 
+            referrerPolicy="no-referrer"
+            onError={(e) => {
+              e.currentTarget.style.display = 'none';
+              const parent = e.currentTarget.parentElement;
+              if (parent) {
+                parent.innerHTML = '<span class="text-2xl font-black tracking-tighter text-slate-900">littly</span>';
+              }
+            }}
+          />
+        </div>
         <div className="flex items-center gap-4">
-          <button className="bg-yellow-400 text-black text-sm font-bold px-4 py-2 rounded-full hover:bg-yellow-500 transition-colors shadow-sm">
+          <a 
+            href={REGISTER_URL}
+            className="bg-yellow-400 text-black text-sm font-bold px-4 py-2 rounded-full hover:bg-yellow-500 transition-colors shadow-sm inline-block"
+          >
             지금 셀러 신청하기
-          </button>
+          </a>
         </div>
       </nav>
 
@@ -39,27 +71,32 @@ const App: React.FC = () => {
           <p className="text-slate-500 text-lg mb-8 font-medium">
             인증 후 바로 판매 시작 · 수수료 2%대
           </p>
-          <button className="w-full bg-yellow-400 text-black text-lg font-extrabold py-4 rounded-2xl shadow-lg shadow-yellow-200 hover:scale-[1.02] active:scale-95 transition-all mb-12">
+          <a 
+            href={REGISTER_URL}
+            className="w-full bg-yellow-400 text-black text-lg font-extrabold py-4 rounded-2xl shadow-lg shadow-yellow-200 hover:scale-[1.02] active:scale-95 transition-all mb-12 flex items-center justify-center"
+          >
             지금 셀러 신청하기
-          </button>
+          </a>
           
-          {/* Emotional Hero Image Replacement */}
-          <div className="relative group">
-            <div className="absolute -inset-1 bg-gradient-to-r from-yellow-400 to-orange-400 rounded-[2.6rem] blur opacity-20 group-hover:opacity-40 transition duration-1000 group-hover:duration-200"></div>
-            <div className="relative aspect-[4/3] w-full overflow-hidden rounded-[2.5rem] shadow-2xl border-4 border-white">
-              <img 
-                src="https://images.unsplash.com/photo-1499750310107-5fef28a66643?auto=format&fit=crop&q=80&w=1000" 
-                alt="Creative Workspace" 
-                className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
-              />
-              {/* Overlay with subtle branding */}
-              <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent flex flex-col justify-end p-8 text-left">
-                <div className="flex items-center gap-2 mb-2">
-                  <div className="w-2 h-2 bg-yellow-400 rounded-full animate-pulse"></div>
-                  <span className="text-white/80 text-xs font-bold tracking-widest uppercase">Now Creating</span>
-                </div>
-                <h3 className="text-white text-xl font-black">당신의 공간이 비즈니스가 되는 순간</h3>
+          {/* Updated Hero Card with User Provided Image Concept */}
+          <div className="relative group px-2">
+            <div className="absolute -inset-2 bg-slate-100 rounded-[2.8rem] blur-xl opacity-50"></div>
+            <div 
+              className="relative aspect-[4/3] w-full overflow-hidden rounded-[2.5rem] shadow-2xl border-4 border-white flex flex-col justify-end p-8 text-left bg-slate-200"
+              style={{
+                backgroundImage: `linear-gradient(to top, rgba(0,0,0,0.85) 0%, rgba(0,0,0,0.4) 40%, rgba(0,0,0,0) 80%), url(${HERO_IMAGE_URL})`,
+                backgroundSize: 'cover',
+                backgroundPosition: 'center'
+              }}
+            >
+              <div className="flex items-center gap-2 mb-3">
+                <div className="w-2.5 h-2.5 bg-yellow-400 rounded-full shadow-[0_0_8px_rgba(250,204,21,0.8)]"></div>
+                <span className="text-white text-[11px] font-bold tracking-[0.15em] uppercase opacity-90">INSPIRED SPACE</span>
               </div>
+              <h3 className="text-white text-2xl font-black leading-[1.3] tracking-tight">
+                당신의 가장 개인적인 영감이<br />
+                가장 가치 있는 상품이 됩니다
+              </h3>
             </div>
           </div>
         </section>
@@ -106,7 +143,7 @@ const App: React.FC = () => {
           <h2 className="text-xl font-bold mb-8">리틀리 사용자 후기</h2>
           <div className="grid grid-cols-2 gap-4">
             {TESTIMONIALS.map((t) => (
-              <div key={t.id} className="relative aspect-square rounded-3xl overflow-hidden group">
+              <div key={t.id} className="relative aspect-square rounded-3xl overflow-hidden group shadow-sm">
                 <img 
                   src={t.image} 
                   alt="User" 
@@ -187,16 +224,26 @@ const App: React.FC = () => {
         <section className="px-5 py-16">
           <div className="bg-slate-900 rounded-[3rem] p-10 text-center relative overflow-hidden">
             <div className="absolute top-0 right-0 w-32 h-32 bg-yellow-400/10 blur-3xl rounded-full translate-x-1/2 -translate-y-1/2"></div>
-            <div className="relative z-10">
+            <div className="relative z-10 flex flex-col items-center">
               <h2 className="text-3xl font-black text-white mb-4 leading-tight">
                 오늘부터,<br />링크 하나로 수익화하세요
               </h2>
               <p className="text-slate-400 mb-10 font-medium">가장 쉽고 빠른 크리에이터 경제의 시작</p>
-              <button className="w-full bg-yellow-400 text-black text-lg font-extrabold py-4 rounded-2xl hover:bg-yellow-500 transition-all flex items-center justify-center gap-2">
+              <a 
+                href={REGISTER_URL}
+                className="w-full bg-yellow-400 text-black text-lg font-extrabold py-4 rounded-2xl hover:bg-yellow-500 transition-all flex items-center justify-center gap-2"
+              >
                 지금 무료로 시작하기
                 <ArrowRight className="w-5 h-5" />
-              </button>
-              <div className="mt-12 text-slate-700 text-2xl font-black tracking-tighter">littly</div>
+              </a>
+              <div className="mt-12 opacity-90 transition-opacity hover:opacity-100 h-8">
+                <img 
+                  src={LOGO_URL} 
+                  alt="littly footer logo" 
+                  className="h-full w-auto invert brightness-0 grayscale" 
+                  referrerPolicy="no-referrer"
+                />
+              </div>
             </div>
           </div>
         </section>
@@ -205,9 +252,12 @@ const App: React.FC = () => {
       {/* Sticky Footer */}
       <footer className="fixed bottom-0 left-0 right-0 p-4 bg-white/90 backdrop-blur-xl border-t border-slate-100 z-50 flex justify-center">
         <div className="max-w-xl w-full">
-          <button className="w-full bg-yellow-400 text-black text-lg font-extrabold py-4 rounded-2xl shadow-xl shadow-yellow-100 active:scale-[0.98] transition-all">
+          <a 
+            href={REGISTER_URL}
+            className="w-full bg-yellow-400 text-black text-lg font-extrabold py-4 rounded-2xl shadow-xl shadow-yellow-100 active:scale-[0.98] transition-all flex items-center justify-center"
+          >
             지금 셀러 신청하기
-          </button>
+          </a>
         </div>
       </footer>
     </div>
